@@ -1,0 +1,3 @@
+--ignore-dir=venv
+--ignore-file=is:.coverage
+--ignore-file=is:coverage.xml
