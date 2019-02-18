@@ -5,7 +5,6 @@ import os
 import sys
 
 import falcon
-
 from releasify.client import (
     Client, 
     InvalidReleaseTypeError,
@@ -13,8 +12,11 @@ from releasify.client import (
     NotFoundError,
     UnauthorizedError,
 )
+
 from .constants import INVALD_LOG_LEVEL_ERR
+from .exceptions import JSONBodyRequiredError
 from .utils import boolify
+
 
 if os.getenv('LOG_LEVEL'):
     log_level = os.getenv('LOG_LEVEL').upper()
@@ -58,7 +60,10 @@ class ReleaseResource(object):
             return falcon.HTTP_500
 
     def on_post(self, req, resp):
-        payload = json.load(req.bounded_stream)
+        try:
+            payload = json.load(req.bounded_stream)
+        except json.decoder.JSONDecodeError:
+            raise JSONBodyRequiredError
 
         owner = get_required_arg(payload, 'owner')
         repo = get_required_arg(payload, 'repo')
@@ -95,6 +100,8 @@ def handle_error(exception, req, resp, params):
         raise falcon.HTTPError(status=falcon.HTTP_400, description=str(exception))
     elif isinstance(exception, NotFoundError):
         raise falcon.HTTPNotFound()
+    elif isinstance(exception, falcon.HTTPBadRequest):
+        raise
     else:
         raise falcon.HTTPInternalServerError(description=str(exception))
 
