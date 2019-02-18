@@ -4,11 +4,11 @@ import json
 from falcon import testing
 import pytest
 
-from releasify.web import (
-    MissingRequiredArgError, 
+from releasifyweb.api import (
     create_api, 
     get_required_arg,
 )
+from releasifyweb.exceptions import MissingRequiredArgError
 
 
 @pytest.fixture()
@@ -29,9 +29,9 @@ def test_get_required_arg_raises():
 
 
 @pytest.mark.parametrize('payload,expected', [
-    ({'_owner': 'foo', 'repo': 'bar', 'release_type': 'major'}, 'owner'),
-    ({'owner': 'foo', '_repo': 'bar', 'release_type': 'major'}, 'repo'),
-    ({'owner': 'foo', 'repo': 'bar', '_release_type': 'major'}, 'release_type'),
+    ({'_owner': 'foo', 'repo': 'bar', 'type': 'major'}, 'owner'),
+    ({'owner': 'foo', '_repo': 'bar', 'type': 'major'}, 'repo'),
+    ({'owner': 'foo', 'repo': 'bar', '_type': 'major'}, 'type'),
 ])
 def test_missing_required_args_raises(payload, expected, client):
     token = base64.b64encode(b'foo:bar').decode('utf-8')

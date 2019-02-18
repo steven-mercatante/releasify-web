@@ -18,7 +18,10 @@ from releasify.client import (
 )
 
 from .constants import INVALD_LOG_LEVEL_ERR
-from .exceptions import JSONBodyRequiredError
+from .exceptions import (
+    MissingRequiredArgError, 
+    JSONBodyRequiredError,
+)
 from .utils import boolify
 
 
@@ -31,12 +34,6 @@ try:
     logging.basicConfig(level=log_level)
 except ValueError:
     sys.exit(INVALD_LOG_LEVEL_ERR.format(log_level=log_level))
-
-
-class MissingRequiredArgError(Exception):
-    def __init__(self, arg):
-        message = f'You\'re missing the required `{arg}` argument'
-        super(MissingRequiredArgError, self).__init__(message)
 
 
 class AuthMiddleware(object):
