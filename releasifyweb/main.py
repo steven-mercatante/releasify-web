@@ -2,6 +2,7 @@ import base64
 import json
 import logging
 import os
+import re
 import sys
 
 import falcon
@@ -37,7 +38,7 @@ class MissingRequiredArgError(Exception):
 
 class AuthMiddleware(object):
     def process_request(self, req, resp):
-        if req.path == '/healthcheck':
+        if req.path in ('/', '/healthcheck'):
             return
 
         auth = req.get_header('Authorization')
@@ -57,6 +58,18 @@ class AuthMiddleware(object):
 class HealthCheckResource(object):
     def on_get(self, req, resp):
         resp.media = {'ok': True}
+
+
+class IndexResource(object):
+    def on_get(self, req, resp):
+        # TODO: return actual HTML
+        resp.status = falcon.HTTP_200
+        resp.content_type = 'text/html'
+        resp.body = """
+        Hi there! This is the index route of the Releasify API.
+        You're probably looking for the /releases endpoint.
+        There's also a handy /healthcheck endpoint if you just want to test that the API is running.
+        """
 
 
 class ReleaseResource(object):
@@ -117,6 +130,7 @@ def handle_error(exception, req, resp, params):
 def create_api():
     api = falcon.API(middleware=[AuthMiddleware()])
     api.add_error_handler(Exception, handle_error)
+    api.add_route('/', IndexResource())
     api.add_route('/healthcheck', HealthCheckResource())
     api.add_route('/releases', ReleaseResource())
     return api
