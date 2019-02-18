@@ -6,7 +6,7 @@ import sys
 
 import falcon
 
-from .client import (
+from releasify.client import (
     Client, 
     InvalidReleaseTypeError,
     NoCommitsError,
