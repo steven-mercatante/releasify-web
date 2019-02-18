@@ -1,3 +1,6 @@
+# TODO: organize Resources into their own package
+# TODO: organize Middleware into their own package
+# TODO: organize error handler and helper functions into their own package(es)
 import base64
 import json
 import logging
