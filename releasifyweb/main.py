@@ -95,7 +95,7 @@ class ReleaseResource(object):
         dry_run = boolify(payload.get('dry_run'))
         force_release = boolify(payload.get('force'))
         draft = boolify(payload.get('draft'))
-        prerelease = boolify(payload.get('prerelease'))
+        prerelease = boolify(payload.get('prerelease', True))
         target_branch = payload.get('target_branch')
 
         client = Client(req.context['user'], req.context['password'])
@@ -106,6 +106,8 @@ class ReleaseResource(object):
         resp.media = {
             'body': result['body'],
             'tag_name': result['tag_name'],
+            'dry_run': result['dry_run'],
+            'prerelease': result['prerelease'],
         }
 
 
