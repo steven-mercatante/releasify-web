@@ -62,9 +62,9 @@ class ReleaseResource(object):
 
         owner = get_required_arg(payload, 'owner')
         repo = get_required_arg(payload, 'repo')
-        release_type = get_required_arg(payload, 'release_type')
+        release_type = get_required_arg(payload, 'type')
         dry_run = boolify(payload.get('dry_run'))
-        force_release = boolify(payload.get('force_release'))
+        force_release = boolify(payload.get('force'))
         draft = boolify(payload.get('draft'))
         prerelease = boolify(payload.get('prerelease'))
         target_branch = payload.get('target_branch')
