@@ -1,5 +1,4 @@
 -r requirements.txt
 codecov==2.0.15
-gunicorn
 pytest
 pytest-cov==2.6.0
