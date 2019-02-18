@@ -1,5 +1,7 @@
 # Releasify - API Interface
 
+[![Build Status](https://travis-ci.org/steven-mercatante/releasify-web.svg?branch=master)](https://travis-ci.org/steven-mercatante/releasify-web)
+
 ## What is this?
 A RESTful API interface to the [releasify](https://github.com/steven-mercatante/releasify) library.
 
