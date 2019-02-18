@@ -37,6 +37,9 @@ class MissingRequiredArgError(Exception):
 
 class AuthMiddleware(object):
     def process_request(self, req, resp):
+        if req.path == '/healthcheck':
+            return
+
         auth = req.get_header('Authorization')
         if auth is None:
             raise falcon.HTTPUnauthorized('Please provide a username and password')
@@ -49,6 +52,11 @@ class AuthMiddleware(object):
 
         req.context['user'] = user
         req.context['password'] = password
+
+
+class HealthCheckResource(object):
+    def on_get(self, req, resp):
+        resp.media = {'ok': True}
 
 
 class ReleaseResource(object):
@@ -109,6 +117,7 @@ def handle_error(exception, req, resp, params):
 def create_api():
     api = falcon.API(middleware=[AuthMiddleware()])
     api.add_error_handler(Exception, handle_error)
+    api.add_route('/healthcheck', HealthCheckResource())
     api.add_route('/releases', ReleaseResource())
     return api
 
