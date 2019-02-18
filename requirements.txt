@@ -1,3 +1,3 @@
-falcon
-gunicorn
-releasify
+falcon==1.4.1
+gunicorn==19.9.0
+releasify==0.6.1
