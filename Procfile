@@ -1,1 +1,1 @@
-web: gunicorn releasifyweb.main:api
+web: gunicorn releasifyweb.api:api
